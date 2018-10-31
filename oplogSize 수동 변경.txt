@@ -1,0 +1,18 @@
+1. Primary를 강등 시킴
+
+2. 강등된 P(현재는 S)를 셧다운시키고 독립실행형 서버로 기동한다
+
+3. local 디비의 oplog.rs 컬렉션(i) 내용을 $natural 의 역순으로 정렬하여 첫번째 건을 임시 컬렉션(이름은 관계없음)에 저장해둔다. insert내용을 넣는 이유는 u는 $set같은 $가 들어간 문자열이 있기 때문이다. 이것은 컬렉션에 삽입하지 않기 위해서다.
+
+db.temp1.insert(db.oplog.rs.find({ op:"i" }).sort({ $natural:-1 }).limit(1).next());
+ 
+4. 현재의 oplog.rs 컬렉션을 삭제한다.
+db.oplog.rs.drop()
+
+5. 새로운 oplog를 생성한다. 
+db.createCollection("oplog.rs", { capped:true, size:1024*1024*1024*2 })	// 2GB크기로 
+
+6. 생성된 oplog 컬렉션에 임시 컬렉션의 내용을 추가한다.
+db.oplog.rs.insert(db.temp1.findOne());
+
+7. 이 서버를 셧다운후 레플리카셋의 멤버로 재시작한다.
