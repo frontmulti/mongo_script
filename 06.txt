@@ -34,13 +34,13 @@ rs.add("s4:10000")
 ** 3.4 버전
 cd ~/mongodb
 mkdir -p logs/sh/
-~/mongodb/bin/mongos --chunkSize 1 --configdb s2:10000,s3:10000,s4:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
+~/mongodb/bin/mongos --chunkSize 1 --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
 
 
 ** 3.6 버전
 cd ~/mongodb
 mkdir -p logs/sh/
-~/mongodb/bin/mongos --bind_ip_all --configdb s2:10000,s3:10000,s4:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
+~/mongodb/bin/mongos --bind_ip_all --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
 
 [ chunkSize 변경 ]
 3.6버전부터는 mongos 기동시에 설정 불가
