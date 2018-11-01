@@ -31,13 +31,13 @@ rs.add("s4:10000")
 
 
 [s1 가상머신에서 ]
-** 3.4 버전
+** 3.2 버전까지
 cd ~/mongodb
 mkdir -p logs/sh/
 ~/mongodb/bin/mongos --chunksize 1 --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
 
 
-** 3.6 버전
+** 3.4 버전부터
 cd ~/mongodb
 mkdir -p logs/sh/
 ~/mongodb/bin/mongos --bind_ip_all --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
