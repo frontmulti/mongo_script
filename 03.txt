@@ -108,9 +108,9 @@ db.randoms.find().sort({ random : 1}).explain("executionStats")
 
 
 53.
-db.randoms.find({ random : { $gt:0.4, $lt:0.5 }}).sort({ _id:-1 }).explain("executeStats");
+db.randoms.find({ random : { $gt:0.4, $lt:0.5 }}).sort({ _id:-1 }).explain("executionStats");
 
-db.randoms.find({ random : { $gt:0.4, $lt:0.5 }}).sort({ _id:-1 }).hint({ random:1 }).explain("executeStats");
+db.randoms.find({ random : { $gt:0.4, $lt:0.5 }}).sort({ _id:-1 }).hint({ random:1 }).explain("executionStats");
 
 
 58.
