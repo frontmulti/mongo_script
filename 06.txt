@@ -1,8 +1,14 @@
 117.
 
 [ s2,s3,s4 가상머신에서 ]
-./bin/mongod --dbpath data/config --bind_ip_all --port 10000 --configsvr --logpath logs/config/logconfig.txt --replSet cfg –-fork
-./bin/mongod --dbpath data/sh --bind_ip_all --port 27017 --shardsvr --logpath logs/sh/logsh.txt --fork
+cd ~/mongodb
+rm -rf data
+rm -rf logs
+mkdir -p data/sh
+mkdir -p data/config
+mkdir -p logs
+./bin/mongod --dbpath data/config  --port 10000 --configsvr --logpath logs/config/logconfig.txt --replSet cfg –-fork
+./bin/mongod --dbpath data/sh  --port 27017 --shardsvr --logpath logs/sh/logsh.txt --fork
 
 
 [ s2:10000으로 접속 후 Config Server를 ReplicaSet으로 구성 ]
@@ -12,18 +18,28 @@ rs.add("s4:10000")
 
 
 [s1 가상머신에서 ]
+** 3.4 버전
+cd ~/mongodb
+mkdir -p logs/sh/
+~/mongodb/bin/mongos --chunkSize 1 --configdb s2:10000,s3:10000,s4:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
+
+
+** 3.6 버전
+cd ~/mongodb
+mkdir -p logs/sh/
 ~/mongodb/bin/mongos --bind_ip_all --configdb s2:10000,s3:10000,s4:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
 
 [ chunkSize 변경 ]
 3.6버전부터는 mongos 기동시에 설정 불가
-터미널을 열어서 mongos에 접속 후 config db의 settings 컬렉션의 데이터를 save한다.
+터미널을 열어서 s1에 접속 후 config db의 settings 컬렉션의 데이터를 save한다.
 
 use config
-//chunksize 1로 조정
+//chunksize 1로 조정 
 db.settings.save( { _id:"chunksize", value: NumberLong(1) } )
 
 
 118.
+** s2 서버로 직접 접속하여 샘플데이터 추가. 아직은 샤딩 구성되지 않은 상태 mongos 라우터와 config서버만 연결되었음.
 use test
 for ( i = 100000; i < 110000; i++ ) { 
     db.grades.insert({student_id: i, type: "exam", score : Math.random() * 100 });    
@@ -36,16 +52,20 @@ db.grades.createIndex({ student_id:1 }, { background : true });
 
 
 119.
+** 이제 샤드서버와 mongos 라우터 연결
 sh.addShard("s1:27017");
 sh.addShard("s2:27017");
 sh.addShard("s3:27017");
 
+** 특정 데이터베이스(test)와 컬렉션에 대해 샤딩 설정
+** 컬렉션에 대해 샤딩 설정시 미리 인덱싱된 샤드키를 지정함.
 sh.enableSharding("test");
 sh.shardCollection("test.grades", {"student_id" : 1})
 
 
 126.
-./bin/mongostat --host 192.168.56.104 --port 27017 --discover  5
+** 모니터링
+./bin/mongostat --host s4 --port 27017 --discover  5
 
 
 
@@ -61,7 +81,7 @@ db.settings.save({"_id" : "chunkSize", value : 32 })
 sh.setBalancerState(false);		//밸런서 기능 끄기
 db.locks.find({ "_id" : "balancer" });	//state필드가 0이면 밸런서가 꺼진 상태
 //num 필드가 1200이 포함된 청크를 test01 샤드로 이동시킴
-sh.moveChunk("test.users", { num : 1200 }, "test01");
+sh.moveChunk("test.grades", { student_id : 101000 }, "test001");
 //청크크기가 chunkSize 설정값보다 크면 이동 불가	
 
 
