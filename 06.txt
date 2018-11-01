@@ -40,10 +40,10 @@ mkdir -p logs/sh/
 ** 3.4 버전부터
 cd ~/mongodb
 mkdir -p logs/sh/
-~/mongodb/bin/mongos --bind_ip_all --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
+~/mongodb/bin/mongos --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
 
 [ chunkSize 변경 ]
-3.6버전부터는 mongos 기동시에 설정 불가
+3.4버전부터는 mongos 기동시에 설정 불가
 터미널을 열어서 s1에 접속 후 config db의 settings 컬렉션의 데이터를 save한다.
 
 use config
