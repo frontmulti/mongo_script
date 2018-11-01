@@ -34,7 +34,7 @@ rs.add("s4:10000")
 ** 3.4 버전
 cd ~/mongodb
 mkdir -p logs/sh/
-~/mongodb/bin/mongos --chunkSize 1 --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
+~/mongodb/bin/mongos --chunksize 1 --configdb cfg/s2:10000 --port 27017 --logpath ~/mongodb/logs/sh/logsh.txt --fork
 
 
 ** 3.6 버전
