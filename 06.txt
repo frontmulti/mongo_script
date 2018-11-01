@@ -66,9 +66,9 @@ db.grades.createIndex({ student_id:1 }, { background : true });
 
 119.
 ** 이제 샤드서버와 mongos 라우터 연결
-sh.addShard("s1:27017");
 sh.addShard("s2:27017");
 sh.addShard("s3:27017");
+sh.addShard("s4:27017");
 
 ** 특정 데이터베이스(test)와 컬렉션에 대해 샤딩 설정
 ** 컬렉션에 대해 샤딩 설정시 미리 인덱싱된 샤드키를 지정함.
