@@ -20,7 +20,7 @@ rm -rf logs
 mkdir -p data/sh
 mkdir -p data/config
 mkdir -p logs
-./bin/mongod --dbpath data/config  --port 10000 --configsvr --logpath logs/logconfig.txt --replSet cfg –-fork
+./bin/mongod --dbpath data/config  --port 10000 --configsvr --logpath logs/logconfig.txt --replSet cfg --fork
 ./bin/mongod --dbpath data/sh  --port 27017 --shardsvr --logpath logs/logsh.txt --fork
 
 
