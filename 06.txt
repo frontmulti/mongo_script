@@ -1,3 +1,16 @@
+*** 샤딩 설정 단계
+A. 애플리케이션 도메인의 데이터 분석
+B. 샤드 키 선정
+C. 샤드 키 필드 인덱싱
+D. Shard Server 와 Config Server 시작
+E. Mongos 라우터 시작(feat. Config Server)
+F. mongos 라우터에 접속하여 Shard Server들을 addShard()
+G. DB에 대해 enableSharding()
+H. Collection에 대해 shardCollection() (feat. Shard Key)
+
+C 작업(인덱싱)은 H를 수행하기 전에만 수행하면 됨.
+
+
 117.
 
 [ s2,s3,s4 가상머신에서 ]
