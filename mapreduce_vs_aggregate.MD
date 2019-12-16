@@ -6,4 +6,5 @@
 실행환경 | JS 런타임 | Native 
 실행결과 | 1.Out Collection 2.Document | 1.Cursor 2.Out Collection
 작업방식 | 주로 Batch Job | 실시간 처리, Batch Job 모두 처리 가능
-분산집계 | 지원 | 지원
+분산집계 | 자동지원 | 자동지원
+실행속도 | 상대적으로 느림 | 상대적으로 빠름
