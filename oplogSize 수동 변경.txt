@@ -1,18 +1,1 @@
-1. Primary¸¦ °­µî ½ÃÅ´
-
-2. °­µîµÈ P(ÇöÀç´Â S)¸¦ ¼Ë´Ù¿î½ÃÅ°°í µ¶¸³½ÇÇàÇü ¼­¹ö·Î ±âµ¿ÇÑ´Ù
-
-3. local µğºñÀÇ oplog.rs ÄÃ·º¼Ç(i) ³»¿ëÀ» $natural ÀÇ ¿ª¼øÀ¸·Î Á¤·ÄÇÏ¿© Ã¹¹øÂ° °ÇÀ» ÀÓ½Ã ÄÃ·º¼Ç(ÀÌ¸§Àº °ü°è¾øÀ½)¿¡ ÀúÀåÇØµĞ´Ù. insert³»¿ëÀ» ³Ö´Â ÀÌÀ¯´Â u´Â $set°°Àº $°¡ µé¾î°£ ¹®ÀÚ¿­ÀÌ ÀÖ±â ¶§¹®ÀÌ´Ù. ÀÌ°ÍÀº ÄÃ·º¼Ç¿¡ »ğÀÔÇÏÁö ¾Ê±â À§ÇØ¼­´Ù.
-
-db.temp1.insert(db.oplog.rs.find({ op:"i" }).sort({ $natural:-1 }).limit(1).next());
- 
-4. ÇöÀçÀÇ oplog.rs ÄÃ·º¼ÇÀ» »èÁ¦ÇÑ´Ù.
-db.oplog.rs.drop()
-
-5. »õ·Î¿î oplog¸¦ »ı¼ºÇÑ´Ù. 
-db.createCollection("oplog.rs", { capped:true, size:1024*1024*1024*2 })	// 2GBÅ©±â·Î 
-
-6. »ı¼ºµÈ oplog ÄÃ·º¼Ç¿¡ ÀÓ½Ã ÄÃ·º¼ÇÀÇ ³»¿ëÀ» Ãß°¡ÇÑ´Ù.
-db.oplog.rs.insert(db.temp1.findOne());
-
-7. ÀÌ ¼­¹ö¸¦ ¼Ë´Ù¿îÈÄ ·¹ÇÃ¸®Ä«¼ÂÀÇ ¸â¹ö·Î Àç½ÃÀÛÇÑ´Ù.
+db.adminCommand({replSetResizeOplog: 1, size: 16000})  //ë‹¨ìœ„ MB
